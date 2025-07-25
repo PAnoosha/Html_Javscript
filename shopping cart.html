@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Ordering System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      width: 50%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 10px;
+      text-align: center;
+    }
+    input {
+      width: 50px;
+    }
+    #summary {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      width: 50%;
+      background-color: #f9f9f9;
+    }
+  </style>
+
+<script>
+
+window.onload = function(){
+	document.getElementById("summary").style.display='none';
+}
+//In case customer wants reorder or cancele this block will execute.
+function refresh(){
+	document.getElementById("summary").style.display='none';
+	document.getElementById("Pizza").value="";
+	document.getElementById("Burger").value="";
+	document.getElementById("Fries").value="";
+}
+
+//logic to print the receipt.
+function printReceipt(){
+	var pizzaCount,burgerCount,friesCount;
+	pizzaCount=document.getElementById("Pizza").value;
+	burgerCount=document.getElementById("Burger").value;
+	friesCount=document.getElementById("Fries").value;
+	var totalPrice;
+	totalPrice= (7*pizzaCount)+(6*burgerCount)+(4*friesCount);
+	var receipt="Receipt Details:\n ";
+	if(pizzaCount != ""){
+		receipt=receipt+"No of Pizzas: "+pizzaCount + " "+ pizzaCount*7+"$";
+	}
+	if(burgerCount!=""){
+		receipt=receipt+"\nNo of Burger: "+burgerCount+ " "+ burgerCount*6+"$";
+	}
+	if(friesCount!=""){
+		receipt=receipt+"\nNo of Fries:  "+friesCount+ " "+ friesCount*4+"$"
+	}
+	if(pizzaCount!= "" || burgerCount!= "" || friesCount!= ""){
+		receipt=receipt+"\ntotalPrice:"+totalPrice+"$";			
+	}
+	alert(receipt);
+}
+
+//Displaying the order details
+function placeOrder(){
+	var pizzaCount,burgerCount,friesCount;
+	pizzaCount=document.getElementById("Pizza").value;
+	burgerCount=document.getElementById("Burger").value;
+	friesCount=document.getElementById("Fries").value;
+	if(pizzaCount==="" && burgerCount ==="" && friesCount ===""){
+		document.getElementById("summary").style.display='none';
+	alert("Please select the items");
+} else{
+	var totalPrice;
+	totalPrice= (7*pizzaCount)+(6*burgerCount)+(4*friesCount);
+
+	var receipt;
+	receipt ="<table border='0'><tr><th colspan='3'>Order Details</th></tr>";
+	if(pizzaCount>0){
+		receipt=receipt+"<tr><td style='text-align:left;'>No of Pizzas: </td><td style='text-align:left;'>"+pizzaCount + "</td>		<td style='text-align:left;'> "+ pizzaCount*7+"$</td></tr>";
+	}
+	if(burgerCount>0){
+		receipt=receipt+"<tr><td style='text-align:left;'>No of Burger:</td><td style='text-align:left;'> "+burgerCount+ "</td><td style='text-align:left;'> "+ burgerCount*6	+"$</td></tr>";
+	}
+	if(friesCount>0){
+		receipt=receipt+"<tr><td style='text-align:left;'>No of Fries:</td><td style='text-align:left;'>  "+friesCount+ "</td><td style='text-align:left;'> "+ friesCount*4+"$</td>	</tr>"
+	}
+	if(pizzaCount>0 || burgerCount || friesCount){
+		receipt=receipt+"<tr><td style='text-align:left;'>totalPrice:</td><td></td><td style='text-align:left;'>"+totalPrice+"$</td></tr><tr><td colspan='3'><button 				onclick='printReceipt()'>Print Receipt</button></td>";
+	}
+	receipt=receipt+"</table>";
+	document.getElementById("summary").style.display="";
+	//alert(receipt);
+	document.getElementById('summary').innerHTML = receipt;
+	}
+}
+
+//validating the Pizza count as number
+function validatePizza(val){
+	if(isNaN(Number(val))){
+		alert("Please enter the no of Pizzas");
+		document.getElementById('Pizza').value = '';
+		document.getElementById("Pizza").focus();
+	}
+}
+
+//validating the Burger count as number
+function validateBurger(val){
+	if(isNaN(Number(val))){
+		alert("Please enter no of Burgers");
+		document.getElementById('Burger').value = '';
+		document.getElementById("Burger").focus();
+	}
+}
+
+//validating the Fries count as number
+function validateFries(val){
+	if(isNaN(Number(val))){
+		alert("Please enter the no of Fries ");
+		document.getElementById('Fries').value = '';
+		document.getElementById("Fries").focus();
+	}
+}
+
+</script>
+</head>
+<body>
+
+<h1>🍔 Food Menu</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Item No.</th>
+      <th>Item</th>
+      <th>Price ($)</th>
+      <th>Quantity</th>
+    </tr>
+    <tr>	
+      <td>1</td>
+      <td>Pizza</td>
+      <td>7($)</td>
+      <td><input type ="text" id="Pizza" onchange="validatePizza(this.value)"/></td>
+    </tr>
+    <tr>	
+      <td>2</td>
+      <td>Burger</td>
+      <td>6($)</td>
+      <td><input type ="text" id="Burger" onchange="validateBurger(this.value)"/></td>
+    </tr>
+    <tr>	
+      <td>3</td>
+      <td>Fries</td>
+      <td>4($)</td>
+      <td><input type ="text" id="Fries" onchange="validateFries(this.value)"/></td>
+    </tr>
+
+  </thead>
+  <tbody id="menu">
+    <!-- Menu Items Go Here -->
+  </tbody>
+</table>
+
+<button onclick="placeOrder()">Place Order</button>
+<button onclick="refresh()">Reorder</button>
+<div id="summary" style="background-color: white; border:none;">
+
+</div>
+
+<script
